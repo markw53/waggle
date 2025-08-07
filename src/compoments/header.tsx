@@ -1,19 +1,17 @@
 // import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../compoments/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../compoments/ui/avatar";
 import {
   User,
   Calendar,
   LayoutDashboard,
   LogOut,
   ShieldCheck,
-  BookOpen,
-  FileText,
   PawPrint,
 } from "lucide-react";
-import { useAuth } from "@/components/hooks/useAuth";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+import useAuth from "../compoments/hooks/useAuth";
+import { ThemeToggle } from "../compoments/ui/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,20 +19,31 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import type { User as AppUser } from "@/types/user";
+} from "../compoments/ui/dropdown-menu";
+// import type { User as AppUser } from "../types/user";
 
 const Header: React.FC = () => {
-  const { isAuthenticated, user, logout, isSiteAdmin } = useAuth();
-  const location = useLocation();
+  const auth = useAuth() as {
+    isAuthenticated?: boolean;
+    user?: { displayName?: string; email?: string; photoURL?: string };
+    logout?: () => Promise<void>;
+    isSiteAdmin?: boolean;
+  };
+  const {
+    isAuthenticated = false,
+    user = undefined,
+    logout = async () => {},
+    isSiteAdmin = false,
+  } = auth || {};
+  // const location = useLocation();
   
   // Optional: if you want to fetch real-time changes for user data, set up a Firestore listener here.
 
   const getAvatarFallback = () => {
     const name = user?.displayName || user?.email || "U";
-    const initials = name
+    const initials: string = name
       .split(" ")
-      .map(word => word[0])
+      .map((word: string) => word[0])
       .join("")
       .slice(0, 2)
       .toUpperCase();
