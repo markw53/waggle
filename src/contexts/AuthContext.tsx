@@ -19,6 +19,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   error: string | null;
   updateUserData: (userData: Partial<User>) => Promise<void>;
+  signUp?: (email: string, password: string, displayName: string) => Promise<void>;
 }
 
 // --- Context ---

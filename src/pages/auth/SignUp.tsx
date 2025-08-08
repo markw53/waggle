@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "../../compoments/ui/button";
+import { Input } from "../../compoments/ui/input";
+import { Label } from "../../compoments/ui/label";
 import {
   Card,
   CardContent,
@@ -10,10 +10,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+} from "../../compoments/ui/card";
+import { Alert, AlertDescription } from "../../compoments/ui/alert";
 import { Loader2, PawPrint } from "lucide-react";
-import { useAuth } from "@/components/hooks/useAuth"; // Should provide signUp()
+import useAuth from "../../compoments/hooks/useAuth"; // Should provide signUp()
 
 interface SignUpFormData {
   displayName: string;
@@ -29,7 +29,10 @@ const SignUp: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>("");
-  const { signUp, loading: authLoading, error: authError } = useAuth();
+  const auth = useAuth();
+  const signUp = auth?.signUp ?? (() => Promise.reject(new Error("Auth not initialized")));
+  const authLoading = auth?.loading ?? false;
+  const authError = auth?.error ?? "";
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,9 +56,13 @@ const SignUp: React.FC = () => {
     try {
       await signUp(formData.email, formData.password, formData.displayName);
       navigate("/dashboard");
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Error handled in auth context, but you can set a fallback:
-      setFormError(err.message || "Registration failed. Please try again.");
+      if (err instanceof Error) {
+        setFormError(err.message || "Registration failed. Please try again.");
+      } else {
+        setFormError("Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
