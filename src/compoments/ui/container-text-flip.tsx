@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useId } from "react";
 
-import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { cn } from "../../lib/utils";
 
 export interface ContainerTextFlipProps {
   /** Array of words to cycle through in the animation */
@@ -16,6 +16,7 @@ export interface ContainerTextFlipProps {
   textClassName?: string;
   /** Duration of the transition animation in milliseconds */
   animationDuration?: number;
+  icon?: React.ReactNode; // Optional icon to display alongside the text
 }
 
 export function ContainerTextFlip({
@@ -28,12 +29,12 @@ export function ContainerTextFlip({
   const id = useId();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [width, setWidth] = useState(100);
-  const textRef = React.useRef(null);
+  const textRef = React.useRef<HTMLDivElement>(null);
 
   const updateWidthForWord = () => {
     if (textRef.current) {
       // Add some padding to the text width (30px on each side)
-      // @ts-ignore
+      // @ts-expext-error
       const textWidth = textRef.current.scrollWidth + 30;
       setWidth(textWidth);
     }

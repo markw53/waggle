@@ -1,4 +1,4 @@
-import { ContainerTextFlip } from "@/components/ui/container-text-flip";
+import { ContainerTextFlip } from "../compoments/ui/container-text-flip";
 import { useEffect, useState } from "react";
 import dogsApi from "@/api/dogs"; // Assume you have a dogs API for Waggle
 import {
@@ -7,12 +7,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+} from "../compoments/ui/card";
+import { Button } from "../compoments/ui/button";
 import { Calendar, PawPrint } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { testimonials } from "@/lib/mockData"; // Should be dog owner reviews!
-import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import { testimonials } from "../lib/mockData"; // Should be dog owner reviews!
+import { InfiniteMovingCards } from "../compoments/ui/infinite-moving-cards";
 
 // Dog event/profile type for featured section
 type DogProfile = {
@@ -128,7 +128,13 @@ export default function Home() {
           <p className="text-muted-foreground mb-8">
             See what happy owners are barking about!
           </p>
-          <InfiniteMovingCards items={testimonials} speed="slow" />
+          <InfiniteMovingCards
+            items={testimonials.map(t => ({
+              ...t,
+              title: t.title ?? "Dog Owner"
+            }))}
+            speed="slow"
+          />
         </div>
       </section>
 
