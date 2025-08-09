@@ -1,6 +1,6 @@
-import { db } from "@/firebase";
+import { db } from "../firebase";
 import { collection, getDocs, query, limit, doc, getDoc, where } from "firebase/firestore";
-import type { DogProfile } from "@/types/dog";
+import type { DogProfile } from "../types/dog";
 
 export const dogsApi = {
   /**
@@ -57,7 +57,7 @@ export const dogsApi = {
    */
   async addDog(dog: Omit<DogProfile, "id">): Promise<{ data: { id: string } }> {
     const dogsRef = collection(db, "dogs");
-    const docRef = await dogsRef.add(dog);
+    const docRef = await import("firebase/firestore").then(({ addDoc }) => addDoc(dogsRef, dog));
     return { data: { id: docRef.id } };
   }
 };

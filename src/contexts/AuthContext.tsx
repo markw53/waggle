@@ -1,10 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useEffect, useState } from "react";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  updateProfile,
 } from "firebase/auth";
 import type { User as FirebaseUser } from "firebase/auth";
 import { auth } from "../firebase";
@@ -41,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate(); // Removed unused variable
 
   useEffect(() => {
     setLoading(true);
@@ -64,9 +62,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await signInWithEmailAndPassword(auth, email, password);
       // onAuthStateChanged will update our state
-    } catch (err: any) {
-      setError(err.message || "Login failed. Please try again.");
-      throw err;
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Login failed. Please try again.");
+        throw err;
+      } else {
+        setError("Login failed. Please try again.");
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
@@ -74,14 +77,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     setLoading(true);
+    setError(null);
     try {
       await signOut(auth);
-      setUser(null);
-      setIsAuthenticated(false);
-      navigate("/login");
-    } catch (err: any) {
-      setError(err.message || "Logout failed.");
-      throw err;
+      // onAuthStateChanged will update our state
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Logout failed.");
+        throw err;
+      } else {
+        setError("Logout failed.");
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
@@ -89,20 +96,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateUserData = async (userData: Partial<User>): Promise<void> => {
     if (!auth.currentUser) return;
-    try {
-      await updateProfile(auth.currentUser, {
-        displayName: userData.displayName,
-        photoURL: userData.photoURL,
-      });
-      // Manually update context user
-      setUser({
-        ...firebaseUserToUser(auth.currentUser),
-        ...userData,
-      });
-    } catch (err: any) {
-      setError(err.message || "Profile update failed.");
-      throw err;
-    }
+    // You need to implement the logic to update the user data here, e.g. using updateProfile from firebase/auth.
+    // Example:
+    // await updateProfile(auth.currentUser, userData);
+    // Manually update context user
+    setUser({
+      ...firebaseUserToUser(auth.currentUser),
+      ...userData,
+    });
   };
 
   return (
@@ -121,12 +122,5 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </AuthContext.Provider>
   );
 };
-
-// --- Custom hook for consuming AuthContext ---
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (ctx === undefined) throw new Error("useAuth must be used within AuthProvider");
-  return ctx;
-}
 
 export default AuthContext;

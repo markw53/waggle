@@ -1,6 +1,6 @@
 import { ContainerTextFlip } from "../compoments/ui/container-text-flip";
 import { useEffect, useState } from "react";
-import dogsApi from "@/api/dogs"; // Assume you have a dogs API for Waggle
+import dogsApi from "../api/dogs"; // Assume you have a dogs API for Waggle
 import {
   Card,
   CardContent,
