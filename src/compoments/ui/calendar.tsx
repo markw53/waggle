@@ -1,9 +1,8 @@
 import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "../../components/ui/button"
+import { buttonVariants } from "@/compoments/ui/buttonVariants"
 
 function Calendar({
   className,
@@ -57,14 +56,7 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
-      components={{
-        IconLeft: ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
-          <ChevronLeft className={cn("size-4", className)} {...props} />
-        ),
-        IconRight: ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
-          <ChevronRight className={cn("size-4", className)} {...props} />
-        ),
-      }}
+      // Removed unsupported 'components' prop to fix type error
       {...props}
     />
   )
