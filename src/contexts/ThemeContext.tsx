@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  useContext,
   useState,
   useEffect,
 } from "react";
@@ -42,8 +41,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
     setThemeState(initialTheme);
     applyTheme(initialTheme);
-    // eslint-disable-next-line
-  }, []);
+    }, []);
 
   // Set theme (and update dom/local) function
   const setTheme = (nextTheme: Theme) => {
@@ -63,10 +61,3 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   );
 };
 
-export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
-}

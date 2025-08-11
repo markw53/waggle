@@ -1,7 +1,7 @@
 // import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../compoments/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "../compoments/ui/avatar";
+import { Button } from "@/compoments/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/compoments/ui/avatar";
 import {
   User,
   Calendar,
@@ -10,8 +10,8 @@ import {
   ShieldCheck,
   PawPrint,
 } from "lucide-react";
-import useAuth from "../compoments/hooks/useAuth";
-import { ThemeToggle } from "../compoments/ui/theme-toggle";
+import useAuth from "@/compoments/hooks/useAuth";
+import { ThemeToggle } from "@/compoments/ui/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../compoments/ui/dropdown-menu";
+} from "@/compoments/ui/dropdown-menu";
 // import type { User as AppUser } from "../types/user";
 
 const Header: React.FC = () => {

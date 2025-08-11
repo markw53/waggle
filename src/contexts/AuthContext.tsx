@@ -5,8 +5,8 @@ import {
   signOut,
 } from "firebase/auth";
 import type { User as FirebaseUser } from "firebase/auth";
-import { auth } from "../firebase";
-import type { User } from "../types/user";
+import { auth } from "@/firebase";
+import type { User } from "@/types/user";
 
 // --- Context type ---
 interface AuthContextType {
